@@ -43,6 +43,7 @@
             <div class="eyebrow">PROJECT CONTROL CENTER <span class="live-pill"><i></i> Live analysis</span></div>
             <h1>Cost overview</h1>
             <p>Enter three-point estimates manually or import them to run PERT cost analysis.</p>
+            <p class="active-project-label" id="activeProjectLabel">Dashboard stats: no project loaded</p>
           </div>
           <div class="heading-actions">
             <button class="button secondary" id="loadSample">↻ Load sample data</button>
@@ -69,6 +70,13 @@
           </article>
         </section>
 
+        <section class="panel comparison-panel" id="comparisonPanel" hidden>
+          <div class="panel-heading"><div><h2>Project comparison</h2><p id="comparisonSubtitle">Comparing two uploaded cost plans.</p></div><button class="button secondary" id="clearProject2">Remove second project</button></div>
+          <div class="project-summary-grid" id="projectSummaryGrid"></div>
+          <div class="comparison-deltas" id="comparisonDeltas"></div>
+          <div class="table-wrap comparison-table-wrap"><table><thead><tr><th>Category</th><th id="compareExpectedHead1">Project 1 expected</th><th id="compareExpectedHead2">Project 2 expected</th><th>Expected Δ (P2 − P1)</th><th id="compareActualHead1">Project 1 actual</th><th id="compareActualHead2">Project 2 actual</th><th>Actual Δ (P2 − P1)</th></tr></thead><tbody id="comparisonTable"></tbody></table></div>
+        </section>
+
         <section class="content-grid">
           <article class="panel chart-panel">
             <div class="panel-heading"><div><h2>PERT expected vs actual</h2><p>Spend by category</p></div><div class="legend"><span><i class="legend-estimate"></i>PERT expected</span><span><i class="legend-actual"></i>Actual</span></div></div>
@@ -82,14 +90,19 @@
 
         <section class="panel data-panel" id="data">
             <div class="panel-heading data-heading">
-            <div><h2>Cost data</h2><p>Enter line items manually or import a CSV or Excel file.</p></div>
-            <div class="data-actions"><label class="button secondary upload-button">↑ Import file<input type="file" id="fileInput" accept=".csv,.xlsx,.xls,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" /></label><button class="button primary" id="addRow">+ Add line item</button></div>
+            <div><h2 id="project1Title">Project 1 cost data</h2><p>Enter line items manually or import this project’s CSV/Excel file.</p></div>
+            <div class="data-actions"><label class="button secondary upload-button">↑ Import Project 1<input type="file" id="fileInput" accept=".csv,.xlsx,.xls,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" /></label><label class="button secondary upload-button">↑ Import Project 2 CSV<input type="file" id="fileInput2" accept=".csv,text/csv" /></label><button class="button primary" id="addRow">+ Add line item</button></div>
           </div>
           <div class="drop-zone" id="dropZone"><span class="upload-icon">↑</span><div><strong>Drop a CSV or Excel file here</strong><span>Columns: Category, Description, Optimistic, Most likely, Pessimistic, Actual</span></div></div>
           <div class="table-wrap">
             <table><thead><tr><th>Category</th><th>Description</th><th>Optimistic</th><th>Most likely</th><th>Pessimistic</th><th>PERT expected</th><th>Actual</th><th>Variance</th><th>Variance %</th><th></th></tr></thead><tbody id="costTable"></tbody></table>
             <div class="table-empty" id="tableEmpty"><div class="empty-icon">⌁</div><strong>No cost entries yet</strong><span>Add a row or import your CSV to get started.</span></div>
           </div>
+        </section>
+
+        <section class="panel data-panel project2-data-panel" id="project2TableSection" hidden>
+          <div class="panel-heading data-heading"><div><h2 id="project2Title">Project 2 cost data</h2><p>Imported line items for comparison.</p></div><button class="button secondary" id="clearProject2Details">Remove Project 2</button></div>
+          <div class="table-wrap"><table><thead><tr><th>Category</th><th>Description</th><th>Optimistic</th><th>Most likely</th><th>Pessimistic</th><th>PERT expected</th><th>Actual</th><th>Variance</th><th>Variance %</th></tr></thead><tbody id="costTable2"></tbody></table></div>
         </section>
 
         <section class="insights-grid" id="insights">

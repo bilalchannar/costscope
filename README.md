@@ -6,7 +6,7 @@ CostScope is a frontend-only project cost dashboard built with plain HTML, CSS, 
 
 1. Keep `index.html`, `styles.css`, and `app.js` together in one folder.
 2. Open `index.html` in a modern browser. If browser file restrictions cause issues, serve the folder with any simple static file server.
-3. Add line items manually or import a CSV/Excel workbook. The first worksheet is used for `.xlsx` and `.xls` files.
+3. Add line items manually or import a CSV/Excel workbook into Project 1. Optionally import a second CSV into Project 2 for a side-by-side comparison. Project 2 is replaced independently when another file is selected. The first worksheet is used for `.xlsx` and `.xls` files in Project 1.
 
 The Excel reader (SheetJS) is loaded from a public CDN, so Excel import requires an internet connection. CSV import and manual entry work without it. Google Fonts also use a CDN.
 
@@ -32,7 +32,7 @@ This frontend-only API-key approach is not suitable for a public deployment or c
 
 ## Reports and limitations
 
-**Download report** creates a standalone HTML report with the calculation method, totals, and line-item details. Imported text is HTML-escaped in the report and table. No data is uploaded unless you explicitly request Gemini analysis.
+**Download report** creates a styled standalone HTML report with print-friendly project summary cards and detailed tables. When both datasets are present it also includes overall and category-level comparisons; categories match case-insensitively, and differences are Project 2 minus Project 1. Imported text is HTML-escaped in the report and table. No data is uploaded unless you explicitly request Gemini analysis.
 
 Data exists only in the current page session and is not saved to a database. Currency display is USD. Charts are simple canvas visualizations and do not add uncertainty distributions or probability ranges beyond the PERT expected-cost calculation.
 
