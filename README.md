@@ -12,7 +12,7 @@ The Excel reader (SheetJS) is loaded from a public CDN, so Excel import requires
 
 ## Cost calculation
 
-Each line must have category, optimistic, most likely, pessimistic, and actual costs. Cost values must be finite non-negative numbers, and estimates must satisfy optimistic ≤ most likely ≤ pessimistic.
+Each line must have category, optimistic, most likely, pessimistic, and actual costs. All three estimates are editable directly in the table, along with the actual cost. For a new zero-valued row, enter the pessimistic estimate first, then most likely, then optimistic, so each edit keeps the estimates in order. Cost values must be finite and from 0 to $1,000,000,000,000; nonzero values below $0.000001 are rejected to prevent unstable percentage calculations. Blank and malformed values are rejected. At most 5,000 rows can be loaded.
 
 PERT expected cost is `(Optimistic + 4 × Most likely + Pessimistic) / 6`.
 
