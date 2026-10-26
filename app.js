@@ -63,11 +63,14 @@
   async function gemini(){
     if(!apiKey){toast('Enter a Gemini API key first.');return}
     if(!rows.length){toast('Add cost data before analysis.');return}
-    const btn=$('runGemini');btn.disabled=true;btn.textContent='Analyzing…';
+    const btn=$('runGemini'),controller=new AbortController();btn.disabled=true;btn.textContent='Analyzing…';
+    $('insightHeadline').textContent='Gemini analysis in progress';
+    $('insightText').textContent='Waiting for Google’s response. This request will time out after 30 seconds.';
+    const timeoutId=setTimeout(()=>controller.abort(),30000);
     try{
       const prompt=`Analyze these project cost rows. Clearly distinguish calculated facts from recommendations. Never claim to predict actual outcomes. Use PERT expected cost = (O+4M+P)/6. Data JSON: ${JSON.stringify(rows.map(r=>({...r,expected:expected(r),variance:r.a-expected(r),variancePct:variancePct(r)})))}`;
       const payload={contents:[{parts:[{text:prompt}]}]};
-      const response=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent',{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':apiKey},body:JSON.stringify(payload)});
+      const response=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent',{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':apiKey},body:JSON.stringify(payload),signal:controller.signal});
       if(!response.ok){
         const detail=await response.text();let apiMessage='';
         try{apiMessage=JSON.parse(detail)?.error?.message||''}catch{}
@@ -79,7 +82,10 @@
       const data=await response.json(),text=data.candidates?.[0]?.content?.parts?.map(p=>p.text||'').join('\n').trim();
       if(!text)throw Error('Gemini returned no analysis.');
       $('insightHeadline').textContent='Gemini analysis';$('insightText').textContent=text;$('insightList').innerHTML='';
-    }catch(e){toast(e.message)}finally{btn.disabled=false;btn.textContent='Analyze with Gemini'}
+    }catch(e){
+      const message=e.name==='AbortError'?'Gemini did not respond within 30 seconds. Check the API key, internet connection, and Google AI Studio project access, then retry.':e instanceof TypeError?'Could not connect to Gemini. Check the internet connection and browser network access.':e.message;
+      $('insightHeadline').textContent='Gemini analysis failed';$('insightText').textContent=message;toast(message);
+    }finally{clearTimeout(timeoutId);btn.disabled=false;btn.textContent='Analyze with Gemini'}
   }
   document.addEventListener('click',e=>{const d=e.target.closest('[data-delete]');if(d){rows.splice(Number(d.dataset.delete),1);render()}});
   document.addEventListener('change',e=>{const el=e.target;if(el.dataset.i===undefined)return;const i=Number(el.dataset.i),r=rows[i];if(!r)return;const k=el.dataset.k;if(['o','m','p','a'].includes(k)){const v=num(el.value);if(v===null){toast(`Enter a number from 0 to ${money(MAX_COST)}; blank or oversized values are not allowed.`);el.value=r[k];return}const next={...r,[k]:v};if(next.o>next.m||next.m>next.p){toast('Keep estimates in order: Optimistic ≤ Most likely ≤ Pessimistic.');el.value=r[k];return}r[k]=v}else if(k==='category'||k==='description'){if(k==='category'&&!el.value.trim()){toast('Category is required.');el.value=r.category;return}r[k]=el.value.trim()}render()});
