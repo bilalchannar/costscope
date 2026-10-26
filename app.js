@@ -83,8 +83,8 @@
     const activeRows=dashboardRows();if(!activeRows.length){toast('Add cost data before analysis.');return}
     const btn=$('runGemini'),controller=new AbortController();btn.disabled=true;btn.textContent='Analyzing…';
     $('insightHeadline').textContent='Gemini analysis in progress';
-    $('insightText').textContent='Waiting for Google’s response. This request will time out after 30 seconds.';
-    const timeoutId=setTimeout(()=>controller.abort(),30000);
+    $('insightText').textContent='Waiting for Google’s response. This request will time out after 60 seconds.';
+    const timeoutId=setTimeout(()=>controller.abort(),60000);
     try{
       const prompt=`Analyze the ${rows.length?'Project 1':'Project 2'} cost rows. Clearly distinguish calculated facts from recommendations. Never claim to predict actual outcomes. Use PERT expected cost = (O+4M+P)/6. Data JSON: ${JSON.stringify(activeRows.map(r=>({...r,expected:expected(r),variance:r.a-expected(r),variancePct:variancePct(r)})))}`;
       const payload={contents:[{parts:[{text:prompt}]}]};
@@ -101,7 +101,7 @@
       if(!text)throw Error('Gemini returned no analysis.');
       $('insightHeadline').textContent='Gemini analysis';$('insightText').textContent=text;$('insightList').innerHTML='';
     }catch(e){
-      const message=e.name==='AbortError'?'Gemini did not respond within 30 seconds. Check the API key, internet connection, and Google AI Studio project access, then retry.':e instanceof TypeError?'Could not connect to Gemini. Check the internet connection and browser network access.':e.message;
+      const message=e.name==='AbortError'?'Gemini did not respond within 60 seconds. Google may be busy or the connection may be slow. Your local cost data is still available; wait and try again.':e instanceof TypeError?'Could not connect to Gemini. Check the internet connection and browser network access.':e.message;
       $('insightHeadline').textContent='Gemini analysis failed';$('insightText').textContent=message;toast(message);
     }finally{clearTimeout(timeoutId);btn.disabled=false;btn.textContent='Analyze with Gemini'}
   }
