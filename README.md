@@ -6,7 +6,7 @@ CostScope is a frontend-only project cost dashboard built with plain HTML, CSS, 
 
 1. Keep `index.html`, `styles.css`, and `app.js` together in one folder.
 2. Open `index.html` in a modern browser. If browser file restrictions cause issues, serve the folder with any simple static file server.
-3. Add line items manually or import a CSV/Excel workbook into Project 1. Optionally import a second CSV into Project 2 for a side-by-side comparison. Project 2 is replaced independently when another file is selected. The first worksheet is used for `.xlsx` and `.xls` files in Project 1.
+3. Add line items manually or import a CSV/Excel workbook into Project 1. Optionally import a second CSV/Excel workbook into Project 2 for a side-by-side comparison. Project 2 is replaced independently when another file is selected. The first worksheet is used for `.xlsx` and `.xls` files.
 
 The Excel reader (SheetJS) is loaded from a public CDN, so Excel import requires an internet connection. CSV import and manual entry work without it. Google Fonts also use a CDN.
 
