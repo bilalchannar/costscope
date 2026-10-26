@@ -94,11 +94,11 @@
 
         <section class="insights-grid" id="insights">
           <article class="panel ai-panel">
-            <div class="ai-heading"><div class="sparkle">✦</div><div><h2>AI cost analyst</h2><p>Pattern detection from your cost data</p></div><span class="ai-badge">GEMINI READY</span></div>
+            <div class="ai-heading"><div class="sparkle">✦</div><div><h2>Cost analyst</h2><p>Local summary · optional Gemini recommendations</p></div><span class="ai-badge">OPTIONAL AI</span></div>
             <div class="ai-controls">
               <label for="geminiKey">Gemini API key</label>
               <div class="key-row"><input id="geminiKey" type="password" placeholder="Paste your key for Gemini analysis" autocomplete="off" /><button class="button secondary" id="saveGeminiKey">Save key</button><button class="button primary" id="runGemini" disabled>Analyze with Gemini</button></div>
-              <small>The key is held in page memory and sent to Google only when you request analysis. Avoid shared devices; this frontend is for local/demo use.</small>
+              <small>Local cost insights work without a key. Save a key and click Analyze with Gemini for extra AI commentary; your rows and key are then sent to Google. Demo use only.</small>
             </div>
             <div class="insight-main"><strong id="insightHeadline">Add data to generate a PERT analysis</strong><p id="insightText">Enter optimistic, most likely, pessimistic, and actual costs. CostScope will calculate the PERT expected cost and identify unusual variances.</p></div>
             <div class="insight-list" id="insightList"></div>

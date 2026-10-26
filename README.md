@@ -26,7 +26,7 @@ For Excel, the first worksheet is read. Formulas are interpreted using values st
 
 ## AI and privacy
 
-The optional Gemini action sends the entered cost rows and the API key directly from the browser to Google's Gemini API when you click **Analyze with Gemini**. The key is held only in JavaScript memory for that page session; it is not saved to local storage or embedded in the source. Clear or close the page to discard it. Anyone with access to the browser session can still inspect the active page, and Google receives the submitted data. Use sample or non-sensitive data for demos.
+The local cost summary works without a key. For extra AI commentary, paste a Gemini API key into the analyst panel, click **Save key**, then click **Analyze with Gemini**. The app currently requests Google's `gemini-3.8-flash` model. It sends the entered cost rows and the API key directly from the browser to Google only when you request analysis. The key is held only in JavaScript memory for that page session; it is not saved to local storage or embedded in the source. Clear or close the page to discard it. Anyone with access to the browser session can still inspect the active page, and Google receives the submitted data. Use sample or non-sensitive data for demos.
 
 This frontend-only API-key approach is not suitable for a public deployment or confidential information. A production app should call an authenticated server-side service that protects the key, applies access controls, and handles provider errors. Model output is advisory and may be inaccurate; check any conclusions against the displayed calculations.
 
