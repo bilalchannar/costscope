@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0d1b2a" />
+    <title>CostScope | Cost intelligence dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">C</div>
+          <div><strong>CostScope</strong><span>Cost intelligence</span></div>
+        </div>
+        <nav class="side-nav" aria-label="Primary navigation">
+          <a class="active" href="#overview"><span>▦</span> Overview</a>
+          <a href="#data"><span>⌁</span> Cost data</a>
+          <a href="#insights"><span>✦</span> AI insights</a>
+          <a href="#reports"><span>↗</span> Reports</a>
+        </nav>
+        <div class="sidebar-footer">
+          <div class="status-dot"></div>
+          <div><strong>Workspace ready</strong><span>Local data mode</span></div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div class="breadcrumbs">Workspace <span>/</span> Cost analysis</div>
+          <div class="top-actions">
+            <button class="icon-button" id="themeToggle" aria-label="Toggle theme">☼</button>
+            <button class="avatar" aria-label="Profile">AM</button>
+          </div>
+        </header>
+
+        <section class="page-heading" id="overview">
+          <div>
+            <div class="eyebrow">PROJECT CONTROL CENTER <span class="live-pill"><i></i> Live analysis</span></div>
+            <h1>Cost overview</h1>
+            <p>Enter three-point estimates manually or import them to run PERT cost analysis.</p>
+          </div>
+          <div class="heading-actions">
+            <button class="button secondary" id="loadSample">↻ Load sample data</button>
+            <button class="button primary" id="downloadReport">↓ Download report</button>
+          </div>
+        </section>
+
+        <section class="metric-grid" aria-label="Cost summary">
+          <article class="metric-card blue">
+            <div class="metric-icon">▣</div><div class="metric-label">PERT expected cost</div>
+            <strong id="estimatedTotal">$0</strong><span class="metric-foot" id="estimatedFoot">Across 0 entries</span>
+          </article>
+          <article class="metric-card purple">
+            <div class="metric-icon">◈</div><div class="metric-label">Actual cost</div>
+            <strong id="actualTotal">$0</strong><span class="metric-foot" id="actualFoot">Across 0 entries</span>
+          </article>
+          <article class="metric-card orange">
+            <div class="metric-icon">↗</div><div class="metric-label">Total variance</div>
+            <strong id="varianceTotal">$0</strong><span class="metric-foot" id="varianceFoot">Against PERT estimate</span>
+          </article>
+          <article class="metric-card green">
+            <div class="metric-icon">%</div><div class="metric-label">Percentage variance</div>
+            <strong id="percentageTotal">0.0%</strong><span class="metric-foot" id="percentageFoot">Against estimate</span>
+          </article>
+        </section>
+
+        <section class="content-grid">
+          <article class="panel chart-panel">
+            <div class="panel-heading"><div><h2>PERT expected vs actual</h2><p>Spend by category</p></div><div class="legend"><span><i class="legend-estimate"></i>PERT expected</span><span><i class="legend-actual"></i>Actual</span></div></div>
+            <div class="chart-wrap"><canvas id="barChart" aria-label="Bar chart comparing estimated and actual costs"></canvas><div class="empty-chart" id="barEmpty">Add cost data to see your comparison.</div></div>
+          </article>
+          <article class="panel chart-panel">
+            <div class="panel-heading"><div><h2>Variance mix</h2><p>Where the budget is moving</p></div><span class="panel-kicker">By category</span></div>
+            <div class="donut-layout"><div class="donut-wrap"><canvas id="donutChart" aria-label="Donut chart showing variance by category"></canvas><div class="donut-center"><strong id="donutTotal">$0</strong><span>variance</span></div></div><div class="donut-legend" id="donutLegend"></div></div>
+          </article>
+        </section>
+
+        <section class="panel data-panel" id="data">
+            <div class="panel-heading data-heading">
+            <div><h2>Cost data</h2><p>Enter line items manually or import a CSV or Excel file.</p></div>
+            <div class="data-actions"><label class="button secondary upload-button">↑ Import file<input type="file" id="fileInput" accept=".csv,.xlsx,.xls,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" /></label><button class="button primary" id="addRow">+ Add line item</button></div>
+          </div>
+          <div class="drop-zone" id="dropZone"><span class="upload-icon">↑</span><div><strong>Drop a CSV or Excel file here</strong><span>Columns: Category, Description, Optimistic, Most likely, Pessimistic, Actual</span></div></div>
+          <div class="table-wrap">
+            <table><thead><tr><th>Category</th><th>Description</th><th>Optimistic</th><th>Most likely</th><th>Pessimistic</th><th>PERT expected</th><th>Actual</th><th>Variance</th><th>Variance %</th><th></th></tr></thead><tbody id="costTable"></tbody></table>
+            <div class="table-empty" id="tableEmpty"><div class="empty-icon">⌁</div><strong>No cost entries yet</strong><span>Add a row or import your CSV to get started.</span></div>
+          </div>
+        </section>
+
+        <section class="insights-grid" id="insights">
+          <article class="panel ai-panel">
+            <div class="ai-heading"><div class="sparkle">✦</div><div><h2>AI cost analyst</h2><p>Pattern detection from your cost data</p></div><span class="ai-badge">GEMINI READY</span></div>
+            <div class="ai-controls">
+              <label for="geminiKey">Gemini API key</label>
+              <div class="key-row"><input id="geminiKey" type="password" placeholder="Paste your key for Gemini analysis" autocomplete="off" /><button class="button secondary" id="saveGeminiKey">Save key</button><button class="button primary" id="runGemini" disabled>Analyze with Gemini</button></div>
+              <small>The key is held in page memory and sent to Google only when you request analysis. Avoid shared devices; this frontend is for local/demo use.</small>
+            </div>
+            <div class="insight-main"><strong id="insightHeadline">Add data to generate a PERT analysis</strong><p id="insightText">Enter optimistic, most likely, pessimistic, and actual costs. CostScope will calculate the PERT expected cost and identify unusual variances.</p></div>
+            <div class="insight-list" id="insightList"></div>
+          </article>
+          <article class="panel watch-panel">
+            <div class="panel-heading"><div><h2>Attention needed</h2><p>Items with the largest overruns</p></div><span class="alert-count" id="alertCount">0</span></div>
+            <div id="alertsList" class="alerts-list"><div class="empty-mini">No exceptions to review.</div></div>
+          </article>
+        </section>
+        <footer id="reports"><span>CostScope · A focused view of your project economics.</span><span>Data stays in your browser</span></footer>
+      </main>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
+    <script src="app.js" defer></script>
+  </body>
+</html>
+
