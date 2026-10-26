@@ -26,13 +26,13 @@ For Excel, the first worksheet is read. Formulas are interpreted using values st
 
 ## AI and privacy
 
-The local cost summary works without a key. For extra AI commentary, paste a Gemini API key into the analyst panel, click **Save key**, then click **Analyze with Gemini**. The app currently requests Google's `gemini-3.8-flash` model. It sends the entered cost rows and the API key directly from the browser to Google only when you request analysis. The key is held only in JavaScript memory for that page session; it is not saved to local storage or embedded in the source. Clear or close the page to discard it. Anyone with access to the browser session can still inspect the active page, and Google receives the submitted data. Use sample or non-sensitive data for demos.
+The local cost summary works without a key. For extra AI commentary, paste a Groq API key into the analyst panel, click **Save key**, then click **Analyze with Groq**. The app requests Groq's `openai/gpt-oss-20b` model through its chat-completions API. It sends the entered cost rows and API key directly from the browser to Groq only when you request analysis. The key is held only in JavaScript memory for that page session; it is not saved to local storage or embedded in the source. Clear or close the page to discard it. Anyone with access to the browser session can still inspect the active page, and Groq receives the submitted data. Use sample or non-sensitive data for demos.
 
 This frontend-only API-key approach is not suitable for a public deployment or confidential information. A production app should call an authenticated server-side service that protects the key, applies access controls, and handles provider errors. Model output is advisory and may be inaccurate; check any conclusions against the displayed calculations.
 
 ## Reports and limitations
 
-**Download report** creates a styled standalone HTML report with print-friendly project summary cards and detailed tables. When both datasets are present it also includes overall and category-level comparisons; categories match case-insensitively, and differences are Project 2 minus Project 1. Imported text is HTML-escaped in the report and table. No data is uploaded unless you explicitly request Gemini analysis.
+**Download report** creates a styled standalone HTML report with print-friendly project summary cards and detailed tables. When both datasets are present it also includes overall and category-level comparisons; categories match case-insensitively, and differences are Project 2 minus Project 1. Imported text is HTML-escaped in the report and table. No data is uploaded unless you explicitly request Groq analysis.
 
 Data exists only in the current page session and is not saved to a database. Currency display is USD. Charts are simple canvas visualizations and do not add uncertainty distributions or probability ranges beyond the PERT expected-cost calculation.
 
